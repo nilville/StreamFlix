@@ -1,6 +1,3 @@
-Here's the complete README content ready to copy:
-
-```
 # StreamFlix
 
 A modern, responsive streaming platform showcase built with Flask and The Movie Database (TMDB) API. Browse trending movies and TV series with a sleek, glassmorphic UI.
@@ -195,6 +192,3 @@ Feel free to fork and submit pull requests!
 ---
 
 **Made with ❤️ using Flask and TMDB API**
-```
-
-Copy the entire content above and paste it into your `README.md` file!Copy the entire content above and paste it into your `README.md` file!
