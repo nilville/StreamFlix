@@ -12,6 +12,11 @@ A modern, responsive streaming platform showcase built with Flask and The Movie 
 - 🖱️ **Interactive Cards** — Hover effects with 3D tilt transformations
 - ⚡ **Fast Loading** — Lazy-loaded images and optimized performance
 
+## Screenshots
+
+<img src="static/images/1.png" alt="Streamfix Home" width="650"/>
+<img src="static/images/2.png" alt="Streamfix Series" width="650"/>
+
 ## Tech Stack
 
 - **Backend:** Flask (Python)
