@@ -38,6 +38,8 @@
 
     html {
       scroll-behavior: smooth;
+      width: 100%;
+      overflow-x: hidden;
     }
 
     body {
@@ -45,6 +47,7 @@
       color: var(--text-primary);
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
+      width: 100%;
       overflow-x: hidden;
       -webkit-tap-highlight-color: transparent;
     }
@@ -421,6 +424,49 @@
       box-shadow: 0 0 8px var(--accent-glow);
     }
 
+    /* ─── Mobile hamburger menu ───────────────────────────── */
+    .mobile-menu-panel {
+      display: none;
+      min-width: 10rem;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      border-radius: 0.75rem;
+      box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.7),
+        0 0 0 1px rgba(124, 92, 252, 0.1);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      padding: 0.35rem 0.25rem;
+      z-index: 90;
+    }
+
+    .mobile-menu-panel.open {
+      display: block;
+    }
+
+    .mobile-menu-item {
+      display: block;
+      padding: 0.6rem 0.9rem;
+      border-radius: 0.625rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .mobile-menu-item:hover {
+      color: var(--text-primary);
+      background: rgba(124, 92, 252, 0.12);
+    }
+
+    .mobile-menu-item.active {
+      color: #fff;
+      background: rgba(124, 92, 252, 0.24);
+      box-shadow: 0 0 18px rgba(124, 92, 252, 0.35);
+    }
+
     /* ─── Detail Modal (Popup) ─────────────────────────────── */
     .detail-modal-overlay {
       opacity: 0;
@@ -560,7 +606,7 @@
 
   <!-- ═══════════════ HEADER ══════════════════ -->
   <header class="site-header" style="padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between relative">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 sm:gap-3" style="text-decoration:none">
         <span class="logo-text text-2xl sm:text-3xl tracking-tight">StreamFlix</span>
@@ -575,11 +621,16 @@
 
       <!-- Mobile nav + Search + Avatar -->
       <div class="flex items-center gap-2 sm:gap-4">
-        <!-- Mobile nav links -->
-        <div class="flex md:hidden items-center gap-4">
-          <a href="/" class="nav-link active text-sm">Movies</a>
-          <a href="/series" class="nav-link text-sm">Series</a>
-        </div>
+        <!-- Mobile hamburger (shows Movies / Series) -->
+        <button id="mobile-menu-toggle" class="md:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg border border-[var(--border-glass)] bg-[var(--bg-glass)] text-gray-300 hover:text-white hover:border-[var(--accent)] transition-colors touch-manipulation"
+          aria-label="Open navigation" aria-expanded="false">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.8" stroke-linecap="round">
+            <path d="M4 7h16" />
+            <path d="M4 12h10" />
+            <path d="M4 17h16" />
+          </svg>
+        </button>
         <button class="text-gray-500 hover:text-white transition-colors p-2 touch-manipulation" aria-label="Search">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
             stroke-width="2">
@@ -590,6 +641,12 @@
         <div
           class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-700 ring-2 ring-white/10 cursor-pointer touch-manipulation">
         </div>
+      </div>
+
+      <!-- Mobile menu dropdown -->
+      <div id="mobile-menu" class="md:hidden mobile-menu-panel absolute right-4 top-full mt-3">
+        <a href="/" class="mobile-menu-item active">Movies</a>
+        <a href="/series" class="mobile-menu-item">Series</a>
       </div>
     </div>
   </header>
@@ -738,6 +795,37 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && modal?.classList.contains('modal-visible')) closeModal();
     });
+
+    // ─── Mobile nav (hamburger) ─────────────────────────────
+    (function () {
+      const toggle = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+
+      if (!toggle || !menu) return;
+
+      const closeMenu = () => {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      };
+
+      toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isOpen = menu.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!menu.classList.contains('open')) return;
+        if (menu.contains(event.target) || toggle.contains(event.target)) return;
+        closeMenu();
+      });
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+          closeMenu();
+        }
+      });
+    })();
 
     // ─── Card interactions ──────────────────────────────────
     document.querySelectorAll('.card-scene').forEach(scene => {
