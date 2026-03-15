@@ -84,4 +84,4 @@ def all_series():
     return render_template('all_series.html', series=series, page=current_page, total_pages=total_pages)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
