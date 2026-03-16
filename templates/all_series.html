@@ -97,6 +97,7 @@
 
             {% for show in series %}
             <div class="card-scene series cursor-pointer touch-manipulation" data-delay="{{ loop.index0 * 60 }}"
+                data-id="{{ show.id }}" data-media-type="tv"
                 data-title="{{ show.name }}" data-poster="{{ show.poster_path }}" data-rating="{{ show.vote_average }}"
                 data-date="{{ show.first_air_date[:4] if show.first_air_date else 'Unknown' }}"
                 data-seasons="{{ show.number_of_seasons if show.number_of_seasons else 0 }}"
@@ -237,6 +238,15 @@
                             <p id="modal-overview"
                                 class="text-[var(--text-primary)] leading-relaxed text-sm sm:text-[0.95rem]"></p>
                         </div>
+
+                        <div class="h-px bg-[var(--border-glass)] mt-4 sm:mt-5 mb-4 sm:mb-5"></div>
+                        <button id="trailer-btn" type="button" class="trailer-btn" data-state="idle">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            Watch Trailer
+                        </button>
+                        <div id="trailer-embed" class="trailer-embed-wrap hidden"></div>
                     </div>
                 </div>
             </div>

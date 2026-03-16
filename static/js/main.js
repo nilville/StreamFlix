@@ -1,10 +1,34 @@
+/* ── Shared state ─────────────────────────────────────── */
+let currentMediaId = null;
+let currentMediaType = 'movie';
+
 /* ── Modal handling ───────────────────────────────── */
 const modal = document.getElementById('detail-modal');
 const closeBtn = modal?.querySelector('button[aria-label="Close"]');
 
+function resetTrailer() {
+    const btn = document.getElementById('trailer-btn');
+    const embed = document.getElementById('trailer-embed');
+    if (btn) {
+        btn.disabled = false;
+        btn.dataset.state = 'idle';
+        btn.className = 'trailer-btn';
+        btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            Watch Trailer`;
+    }
+    if (embed) {
+        embed.innerHTML = '';
+        embed.classList.add('hidden');
+    }
+}
+
 function closeModal() {
     modal?.classList.remove('modal-visible');
     document.body.style.overflow = '';
+    resetTrailer();
 }
 
 function openModal() {
@@ -20,11 +44,64 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal?.classList.contains('modal-visible')) closeModal();
 });
 
+/* ── Trailer button ───────────────────────────────────── */
+document.getElementById('trailer-btn')?.addEventListener('click', async function () {
+    const btn = this;
+    const embed = document.getElementById('trailer-embed');
+    if (!embed || !currentMediaId) return;
+
+    if (btn.dataset.state === 'playing') {
+        embed.innerHTML = '';
+        embed.classList.add('hidden');
+        btn.dataset.state = 'idle';
+        btn.className = 'trailer-btn';
+        btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            Watch Trailer`;
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="trailer-spinner"></span> Loading\u2026';
+
+    try {
+        const res = await fetch(`/trailer/${currentMediaType}/${currentMediaId}`);
+        const data = await res.json();
+
+        if (data.key) {
+            embed.innerHTML = `<iframe
+                src="https://www.youtube.com/embed/${data.key}?autoplay=1&rel=0"
+                allow="autoplay; encrypted-media; fullscreen"
+                allowfullscreen></iframe>`;
+            embed.classList.remove('hidden');
+            btn.disabled = false;
+            btn.dataset.state = 'playing';
+            btn.className = 'trailer-btn playing';
+            btn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+                Hide Trailer`;
+        } else {
+            btn.innerHTML = 'No trailer available';
+            btn.disabled = true;
+        }
+    } catch {
+        btn.disabled = false;
+        btn.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+            </svg>
+            Try Again`;
+    }
+});
+
 /* ── Mobile nav (hamburger) ───────────────────────────── */
 (function () {
     const toggle = document.getElementById('mobile-menu-toggle');
     const menu = document.getElementById('mobile-menu');
-
     if (!toggle || !menu) return;
 
     const closeMenu = () => {
@@ -45,26 +122,26 @@ document.addEventListener('keydown', (e) => {
     });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) {
-            closeMenu();
-        }
+        if (window.innerWidth >= 768) closeMenu();
     });
 })();
 
 /* ── Card interactions ─────────────────────────────────── */
 document.querySelectorAll('.card-scene').forEach(scene => {
-    /* apply staggered animation delay from data attribute */
     const delay = scene.dataset.delay;
     if (delay) scene.style.animationDelay = delay + 'ms';
 
     const card = scene.querySelector('.movie-card');
     if (!card) return;
 
-    /* ── Click to open modal ───────────────────────────────── */
-    scene.addEventListener('click', (e) => {
+    scene.addEventListener('click', () => {
         if (!modal) return;
 
-        // Populate modal with data
+        currentMediaId = scene.dataset.id || null;
+        currentMediaType = scene.dataset.mediaType || 'movie';
+
+        resetTrailer();
+
         const titleEl = document.getElementById('modal-title');
         const ratingEl = document.getElementById('modal-rating');
         const dateEl = document.getElementById('modal-date');
@@ -72,17 +149,16 @@ document.querySelectorAll('.card-scene').forEach(scene => {
         const posterImg = document.getElementById('modal-poster');
 
         if (titleEl) titleEl.textContent = scene.dataset.title || 'N/A';
-        if (ratingEl) ratingEl.textContent = scene.dataset.rating || '—';
+        if (ratingEl) ratingEl.textContent = scene.dataset.rating || '\u2014';
         if (dateEl) dateEl.textContent = scene.dataset.date || 'Unknown';
         if (overviewEl) overviewEl.textContent = scene.dataset.overview || 'No description available.';
 
-        // Handle seasons/episodes for series pages specifically
         const seasonsElement = document.getElementById('modal-seasons');
         if (seasonsElement) {
             const seasons = scene.dataset.seasons;
             const episodes = scene.dataset.episodes;
             if (seasons && episodes && (parseInt(seasons) > 0 || parseInt(episodes) > 0)) {
-                seasonsElement.textContent = `${seasons} Seasons • ${episodes} Episodes`;
+                seasonsElement.textContent = `${seasons} Seasons \u2022 ${episodes} Episodes`;
                 seasonsElement.classList.remove('hidden');
             } else {
                 seasonsElement.classList.add('hidden');
@@ -100,7 +176,6 @@ document.querySelectorAll('.card-scene').forEach(scene => {
         openModal();
     });
 
-    /* ── Mouse interactions for 3D tilt ─────────────────────────────── */
     scene.addEventListener('mousemove', e => {
         const r = scene.getBoundingClientRect();
         const x = (e.clientX - r.left) / r.width - 0.5;
