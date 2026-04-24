@@ -378,6 +378,11 @@ body::before {
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: #fff;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 .card-meta {
@@ -407,6 +412,10 @@ body::before {
   -webkit-line-clamp: 4;
   line-clamp: 4;
   overflow: hidden;
+}
+
+.grid-hide-on-mobile {
+  display: -webkit-box;
 }
 
 /* ─── Watch button ────────────────────────────────────── */
@@ -494,6 +503,65 @@ body::before {
   border-radius: 1px;
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ─── Mobile Bottom Navigation ────────────────────────── */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+  background: rgba(13, 16, 23, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-top: 1px solid var(--border-glass);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottom-nav-inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 64px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  flex: 1;
+}
+
+.bottom-nav-link svg {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+.bottom-nav-link span {
+  font-size: 0.65rem;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.bottom-nav-link.active {
+  color: #fff;
+}
+
+.bottom-nav-link.active svg {
+  color: var(--accent);
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+  transform: translateY(-2px);
 }
 
 /* ─── Mobile hamburger menu ───────────────────────────── */
@@ -645,6 +713,10 @@ body::before {
     font-size: 1.5rem;
   }
 
+  .bottom-nav {
+    display: block;
+  }
+
   .hero-glow {
     width: 100%;
     max-width: 400px;
@@ -662,57 +734,66 @@ body::before {
   }
 
   .card-body {
-    padding: 14px 16px 18px;
-    gap: 8px;
+    padding: 10px 12px 14px;
+    gap: 6px;
   }
 
   .card-title {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
 
   .card-overview {
-    font-size: 0.75rem;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    display: none;
+  }
+
+  .grid-hide-on-mobile {
+    display: none !important;
   }
 
   .card-divider {
-    margin: 0 -16px;
+    margin: 0 -12px;
+    opacity: 0.5;
   }
 
   .rating-badge {
-    padding: 3px 7px;
-    font-size: 0.7rem;
-    top: 8px;
-    right: 8px;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    top: 6px;
+    right: 6px;
+    border-radius: 6px;
   }
 
   .eps-badge {
-    padding: 3px 7px;
-    font-size: 0.65rem;
-    top: 8px;
-    left: 8px;
+    padding: 2px 6px;
+    font-size: 0.6rem;
+    top: 6px;
+    left: 6px;
+    border-radius: 6px;
   }
 
   .meta-chip {
-    font-size: 0.62rem;
-    padding: 2px 7px;
+    font-size: 0.6rem;
+    padding: 1px 6px;
+    border-radius: 4px;
   }
 
   .card-scene:hover .movie-card {
-    transform: translateY(-4px) scale(1.02);
+    transform: translateY(-4px) scale(1.01);
   }
 }
 
 @media (max-width: 639px) {
   .main-content {
-    padding-left: max(1rem, env(safe-area-inset-left));
-    padding-right: max(1rem, env(safe-area-inset-right));
-    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-bottom: calc(80px + env(safe-area-inset-bottom));
+    padding-top: 1rem;
   }
 
   .page-heading {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 }
 

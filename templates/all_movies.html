@@ -11,7 +11,7 @@
         <div><a href="/" class="btn">Back to Trending</a></div>
     </div>
 
-    <div class="relative z-10 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div class="relative z-10 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {% for movie in movies %}
         <div class="card-scene cursor-pointer touch-manipulation" data-delay="{{ loop.index0 * 60 }}"
             data-id="{{ movie.id }}" data-media-type="movie"
@@ -40,7 +40,7 @@
                     <h2 class="card-title">{{ movie.title }}</h2>
                     <div class="card-meta"><span class="meta-chip">{{ movie.release_date }}</span></div>
                     <div class="card-divider"></div>
-                    <p class="card-overview">{{ movie.overview }}</p>
+                    <p class="card-overview grid-hide-on-mobile">{{ movie.overview }}</p>
                 </div>
             </article>
         </div>

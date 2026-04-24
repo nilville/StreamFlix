@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <div id="series-grid" class="relative z-10 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div id="series-grid" class="relative z-10 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         {% for show in series %}
         <div class="card-scene series cursor-pointer touch-manipulation" data-delay="{{ loop.index0 * 60 }}"
             data-id="{{ show.id }}" data-media-type="tv"
@@ -47,7 +47,7 @@
                         {% if show.number_of_episodes %}<span class="meta-chip">{{ show.number_of_episodes }} eps</span>{% endif %}
                     </div>
                     <div class="card-divider"></div>
-                    <p class="card-overview">{{ show.overview }}</p>
+                    <p class="card-overview grid-hide-on-mobile">{{ show.overview }}</p>
                 </div>
             </article>
         </div>
