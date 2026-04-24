@@ -98,6 +98,20 @@ def all_series():
         
     return render_template('all_series.html', series=series_list, page=current_page, total_pages=total_pages)
 
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    if not query:
+        return render_template('search_results.html', results=[], query='')
+    
+    data = tmdb_request("search/multi", {"language": "en-US", "query": query, "page": 1})
+    results = data.get('results', []) if data else []
+    
+    # Filter to only show movies and tv shows
+    filtered_results = [r for r in results if r.get('media_type') in ('movie', 'tv')]
+    
+    return render_template('search_results.html', results=filtered_results, query=query)
+
 @app.route('/trailer/<media_type>/<int:media_id>')
 def get_trailer(media_type, media_id):
     if media_type not in ('movie', 'tv'):

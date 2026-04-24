@@ -6,28 +6,31 @@ let currentMediaType = 'movie';
 const modal = document.getElementById('detail-modal');
 const closeBtn = modal?.querySelector('button[aria-label="Close"]');
 
+const trailerModal = document.getElementById('trailer-modal');
+const trailerContainer = document.getElementById('trailer-video-container');
+const closeTrailerBtn = document.getElementById('close-trailer-modal');
+
 function resetTrailer() {
     const btn = document.getElementById('trailer-btn');
-    const embed = document.getElementById('trailer-embed');
     if (btn) {
         btn.disabled = false;
-        btn.dataset.state = 'idle';
-        btn.className = 'trailer-btn';
         btn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z"/>
             </svg>
             Watch Trailer`;
     }
-    if (embed) {
-        embed.innerHTML = '';
-        embed.classList.add('hidden');
+    if (trailerContainer) {
+        trailerContainer.innerHTML = '';
     }
+    trailerModal?.classList.remove('modal-visible');
 }
 
 function closeModal() {
     modal?.classList.remove('modal-visible');
-    document.body.style.overflow = '';
+    if (!trailerModal?.classList.contains('modal-visible')) {
+        document.body.style.overflow = '';
+    }
     resetTrailer();
 }
 
@@ -36,34 +39,41 @@ function openModal() {
     document.body.style.overflow = 'hidden';
 }
 
+function closeTrailerModal() {
+    trailerModal?.classList.remove('modal-visible');
+    if (trailerContainer) trailerContainer.innerHTML = '';
+    if (!modal?.classList.contains('modal-visible')) {
+        document.body.style.overflow = '';
+    }
+}
+
 closeBtn?.addEventListener('click', closeModal);
 modal?.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
 });
+
+closeTrailerBtn?.addEventListener('click', closeTrailerModal);
+trailerModal?.addEventListener('click', (e) => {
+    if (e.target === trailerModal) closeTrailerModal();
+});
+
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal?.classList.contains('modal-visible')) closeModal();
+    if (e.key === 'Escape') {
+        if (trailerModal?.classList.contains('modal-visible')) {
+            closeTrailerModal();
+        } else if (modal?.classList.contains('modal-visible')) {
+            closeModal();
+        }
+    }
 });
 
 /* ── Trailer button ───────────────────────────────────── */
 document.getElementById('trailer-btn')?.addEventListener('click', async function () {
     const btn = this;
-    const embed = document.getElementById('trailer-embed');
-    if (!embed || !currentMediaId) return;
-
-    if (btn.dataset.state === 'playing') {
-        embed.innerHTML = '';
-        embed.classList.add('hidden');
-        btn.dataset.state = 'idle';
-        btn.className = 'trailer-btn';
-        btn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            Watch Trailer`;
-        return;
-    }
+    if (!trailerContainer || !currentMediaId) return;
 
     btn.disabled = true;
+    const originalContent = btn.innerHTML;
     btn.innerHTML = '<span class="trailer-spinner"></span> Loading\u2026';
 
     try {
@@ -71,30 +81,27 @@ document.getElementById('trailer-btn')?.addEventListener('click', async function
         const data = await res.json();
 
         if (data.key) {
-            embed.innerHTML = `<iframe
+            trailerContainer.innerHTML = `<iframe
                 src="https://www.youtube.com/embed/${data.key}?autoplay=1&rel=0"
+                class="w-full h-full"
                 allow="autoplay; encrypted-media; fullscreen"
                 allowfullscreen></iframe>`;
-            embed.classList.remove('hidden');
+            trailerModal.classList.add('modal-visible');
             btn.disabled = false;
-            btn.dataset.state = 'playing';
-            btn.className = 'trailer-btn playing';
-            btn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-                Hide Trailer`;
+            btn.innerHTML = originalContent;
         } else {
             btn.innerHTML = 'No trailer available';
-            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }, 2000);
         }
     } catch {
         btn.disabled = false;
-        btn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-            Try Again`;
+        btn.innerHTML = 'Error Loading Trailer';
+        setTimeout(() => {
+            btn.innerHTML = originalContent;
+        }, 2000);
     }
 });
 
@@ -169,7 +176,7 @@ document.querySelectorAll('.card-scene').forEach(scene => {
         if (posterImg) {
             posterImg.alt = scene.dataset.title || 'Poster';
             posterImg.src = poster
-                ? `https://image.tmdb.org/t/p/w500${poster}`
+                ? `https://image.tmdb.org/t/p/w500{{ poster }}`.replace('{{ poster }}', poster)
                 : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Crect fill='%2311151E' width='400' height='600'/%3E%3C/svg%3E";
         }
 
