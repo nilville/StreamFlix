@@ -1,53 +1,26 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
+{% from "macros.html" import render_card %}
 
 {% block title %}StreamFlix — Home{% endblock %}
 
 {% block content %}
-    <!-- Section heading -->
-    <div class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between">
-      <div>
+<!-- Section heading -->
+<div class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between">
+    <div>
         <p class="section-label mb-2">Curated for you</p>
-        <h2 class="section-title">Trending <span style="color:var(--accent)">Now</span></h2>
-      </div>
-      <div>
+        <h2 class="section-title">
+            Trending <span style="color: var(--accent)">Now</span>
+        </h2>
+    </div>
+    <div>
         <a href="/all_movies" class="btn">View All Movies</a>
-      </div>
     </div>
+</div>
 
-    <!-- ═══ MOVIE GRID ═══════════════════════ -->
-    <div class="relative z-10 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {% for movie in movies %}
-      <div class="card-scene cursor-pointer touch-manipulation" data-delay="{{ loop.index0 * 60 }}"
-        data-id="{{ movie.id }}" data-media-type="movie"
-        data-title="{{ movie.title }}" data-poster="{{ movie.poster_path }}" data-rating="{{ movie.vote_average }}"
-        data-date="{{ movie.release_date }}" data-overview="{{ movie.overview }}">
-        <article class="movie-card">
-          <!-- Poster -->
-          <div class="poster-wrap">
-            {% if movie.poster_path %}
-            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" alt="{{ movie.title }} poster" loading="lazy">
-            {% else %}
-            <div class="w-full h-full flex items-center justify-center" style="background:var(--bg-surface)">
-              <svg class="w-12 h-12 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-              </svg>
-            </div>
-            {% endif %}
-            <div class="rating-badge">
-              <svg class="star-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2l2.9 8.9H23l-7.4 5.4 2.8 8.6L12 19.7l-6.4 5.2 2.8-8.6L1 10.9h8.1z" />
-              </svg>
-              <span class="font-mono">{{ movie.vote_average }}</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <h2 class="card-title">{{ movie.title }}</h2>
-            <div class="card-meta"><span class="meta-chip">{{ movie.release_date }}</span></div>
-            <div class="card-divider"></div>
-            <p class="card-overview grid-hide-on-mobile">{{ movie.overview }}</p>
-          </div>
-        </article>
-      </div>
-      {% endfor %}
-    </div>
+<!-- ═══ MOVIE GRID ═══════════════════════ -->
+<div class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+    {% for movie in movies %}
+        {{ render_card(movie, 'movie', loop.index0) }}
+    {% endfor %}
+</div>
 {% endblock %}

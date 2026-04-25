@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Discover trending movies and series with StreamFlix. Explore the latest in entertainment with trailers and detailed insights.">
+    <meta name="keywords" content="movies, series, streaming, trailers, entertainment, StreamFlix">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon-512.png') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta name="theme-color" content="#080A0F">
-    <title>{% block title %}StreamFlix{% endblock %}</title>
+    <title>{% block title %}StreamFlix — Discover Movies & Series{% endblock %}</title>
 </head>
 <body>
     <header class="site-header" style="padding-left: env(safe-area-inset-left); padding-right: env(safe-area-inset-right);">
@@ -102,10 +104,10 @@
 
     <!-- Video Trailer Modal -->
     <div id="trailer-modal" class="detail-modal-overlay fixed inset-0 z-[300] flex items-center justify-center p-0 sm:p-4" style="background: rgba(0,0,0,0.9); backdrop-filter: blur(20px);">
+        <button type="button" id="close-trailer-modal" class="absolute top-6 right-6 z-[310] w-12 h-12 flex items-center justify-center rounded-full bg-black/40 text-white hover:bg-white/20 transition-all border border-white/20 backdrop-blur-xl group">
+            <svg class="w-6 h-6 transform group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
         <div class="relative w-full max-w-6xl aspect-video bg-black shadow-2xl overflow-hidden sm:rounded-2xl border border-white/10">
-            <button type="button" id="close-trailer-modal" class="absolute top-4 right-4 z-50 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 text-white hover:bg-white/20 transition-all border border-white/10 backdrop-blur-md">
-                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-            </button>
             <div id="trailer-video-container" class="w-full h-full">
                 <!-- YouTube iframe will be injected here -->
             </div>

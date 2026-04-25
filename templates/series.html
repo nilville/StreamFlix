@@ -1,58 +1,27 @@
-{% extends "base.html" %}
+{% extends "base.html" %} 
+{% from "macros.html" import render_card %}
 
 {% block title %}StreamFlix — Series{% endblock %}
 
 {% block content %}
-    <div class="hero-glow series"></div>
-    <div class="page-heading relative z-10 mb-6 sm:mb-10">
-      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
+<div class="hero-glow series"></div>
+<div class="page-heading relative z-10 mb-6 sm:mb-10">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
         <div>
-          <p class="section-label series mb-2">Binge-worthy picks</p>
-          <h2 class="section-title">Trending <span style="color:var(--accent-teal)">Series</span></h2>
+            <p class="section-label series mb-2">Binge-worthy picks</p>
+            <h2 class="section-title">
+                Trending <span style="color: var(--accent-teal)">Series</span>
+            </h2>
         </div>
         <div>
-          <a href="/all_series" class="btn">View All Series</a>
+            <a href="/all_series" class="btn">View All Series</a>
         </div>
-      </div>
     </div>
+</div>
 
-    <div id="series-grid" class="relative z-10 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-      {% for show in series %}
-      <div class="card-scene series cursor-pointer touch-manipulation" data-delay="{{ loop.index0 * 60 }}"
-        data-id="{{ show.id }}" data-media-type="tv"
-        data-title="{{ show.name }}" data-poster="{{ show.poster_path }}" data-rating="{{ show.vote_average }}"
-        data-date="{{ show.first_air_date[:4] if show.first_air_date else 'Unknown' }}"
-        data-seasons="{{ show.number_of_seasons if show.number_of_seasons else 0 }}"
-        data-episodes="{{ show.number_of_episodes if show.number_of_episodes else 0 }}"
-        data-overview="{{ show.overview }}">
-        <article class="movie-card">
-          <div class="poster-wrap">
-            {% if show.poster_path %}
-            <img src="https://image.tmdb.org/t/p/w500{{ show.poster_path }}" alt="{{ show.name }} poster" loading="lazy">
-            {% else %}
-            <div class="w-full h-full flex items-center justify-center" style="background:var(--bg-surface)">
-              <svg class="w-12 h-12 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10l4.553-2.07A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.9L15 14M4 8a2 2 0 00-2 2v4a2 2 0 002 2h8a2 2 0 002-2v-4a2 2 0 00-2-2H4z" />
-              </svg>
-            </div>
-            {% endif %}
-            {% if show.number_of_seasons %}<div class="eps-badge">S{{ show.number_of_seasons }}</div>{% endif %}
-            <div class="rating-badge">
-              <svg class="star-icon" viewBox="0 0 24 24"><path d="M12 2l2.9 8.9H23l-7.4 5.4 2.8 8.6L12 19.7l-6.4 5.2 2.8-8.6L1 10.9h8.1z" /></svg>
-              <span class="font-mono">{{ show.vote_average }}</span>
-            </div>
-          </div>
-          <div class="card-body">
-            <h2 class="card-title">{{ show.name }}</h2>
-            <div class="card-meta">
-              {% if show.first_air_date %}<span class="meta-chip">{{ show.first_air_date[:4] }}</span>{% endif %}
-              {% if show.number_of_episodes %}<span class="meta-chip">{{ show.number_of_episodes }} eps</span>{% endif %}
-            </div>
-            <div class="card-divider"></div>
-            <p class="card-overview grid-hide-on-mobile">{{ show.overview }}</p>
-          </div>
-        </article>
-      </div>
-      {% endfor %}
-    </div>
+<div id="series-grid" class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+    {% for show in series %}
+        {{ render_card(show, 'tv', loop.index0) }}
+    {% endfor %}
+</div>
 {% endblock %}
