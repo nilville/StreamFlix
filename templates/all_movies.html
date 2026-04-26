@@ -21,11 +21,23 @@
 </div>
 
 {% if total_pages and total_pages > 1 %}
-<div class="relative z-10 mt-10 flex items-center justify-center gap-3 text-sm text-[var(--text-muted)]">
-    {% if page > 1 %}<a href="{{ url_for('all_movies', page=page-1) }}" class="btn">‹ Prev</a>{% endif %}
-    <span class="font-mono px-4 py-1.5 rounded-full border border-[var(--border-glass)] bg-[var(--bg-glass)] text-[var(--text-primary)]">
+<div class="pagination-container relative z-10">
+    {% if page > 1 %}
+    <a href="{{ url_for('all_movies', page=page-1) }}" class="btn">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        Prev
+    </a>
+    {% endif %}
+    
+    <span class="pagination-info">
         Page {{ page }} of {{ total_pages }}
     </span>
-    {% if page < total_pages %}<a href="{{ url_for('all_movies', page=page+1) }}" class="btn">Next ›</a>{% endif %}
+    
+    {% if page < total_pages %}
+    <a href="{{ url_for('all_movies', page=page+1) }}" class="btn">
+        Next
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+    </a>
+    {% endif %}
 </div>
 {% endif %} {% endblock %}

@@ -160,19 +160,20 @@ document.querySelectorAll(".card-scene").forEach((scene) => {
         : "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600'%3E%3Crect fill='%2311151E' width='400' height='600'/%3E%3C/svg%3E";
     }
 
-
     openModal();
   });
 
-  scene.addEventListener("mousemove", (e) => {
-    if (window.matchMedia("(hover: none)").matches) return;
-    const r = scene.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    card.style.transform = `translateY(-10px) rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg) scale(1.03)`;
-  });
+  const isTouchDevice = window.matchMedia("(hover: none)").matches;
+  if (!isTouchDevice) {
+    scene.addEventListener("mousemove", (e) => {
+      const r = scene.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `translateY(-10px) rotateX(${(-y * 10).toFixed(2)}deg) rotateY(${(x * 10).toFixed(2)}deg) scale(1.03)`;
+    });
 
-  scene.addEventListener("mouseleave", () => {
-    card.style.transform = "";
-  });
+    scene.addEventListener("mouseleave", () => {
+      card.style.transform = "";
+    });
+  }
 });
