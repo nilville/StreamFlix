@@ -1,27 +1,27 @@
-{% extends "base.html" %} 
-{% from "macros.html" import render_card %}
-
-{% block title %}StreamFlix — Series{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% from "macros.html" import render_card %} {% block
+title %}StreamFlix — Series{% endblock %} {% block content %}
 <div class="hero-glow series"></div>
 <div class="page-heading relative z-10 mb-6 sm:mb-10">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
-        <div>
-            <p class="section-label series mb-2">Binge-worthy picks</p>
-            <h2 class="section-title">
-                Trending <span style="color: var(--accent-teal)">Series</span>
-            </h2>
-        </div>
-        <div>
-            <a href="/all_series" class="btn">View All Series</a>
-        </div>
+  <div
+    class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8"
+  >
+    <div>
+      <p class="section-label series mb-2">Binge-worthy picks</p>
+      <h2 class="section-title">
+        Trending <span style="color: var(--accent-teal)">Series</span>
+      </h2>
     </div>
+    <div>
+      <a href="/all_series" class="btn">View All Series</a>
+    </div>
+  </div>
 </div>
 
-<div id="series-grid" class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-    {% for show in series %}
-        {{ render_card(show, 'tv', loop.index0) }}
-    {% endfor %}
+<div
+  id="series-grid"
+  class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+>
+  {% for show in series %} {{ render_card(show, 'tv', loop.index0) }} {% endfor
+  %}
 </div>
 {% endblock %}

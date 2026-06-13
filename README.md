@@ -45,6 +45,7 @@ A modern, responsive streaming platform showcase built with Flask and The Movie 
 ## Installation
 
 ### Prerequisites
+
 - Python 3.8+
 - pip (Python package manager)
 - A TMDB API account
@@ -52,11 +53,13 @@ A modern, responsive streaming platform showcase built with Flask and The Movie 
 ### Setup
 
 1. **Clone or download the repository:**
+
    ```bash
    cd aslkdf
    ```
 
 2. **Create a virtual environment:**
+
    ```bash
    python -m venv .venv
    ```
@@ -72,6 +75,7 @@ A modern, responsive streaming platform showcase built with Flask and The Movie 
      ```
 
 4. **Install dependencies:**
+
    ```bash
    pip install flask requests python-dotenv
    ```
@@ -84,12 +88,14 @@ A modern, responsive streaming platform showcase built with Flask and The Movie 
    - Also note your API Key (optional for this project)
 
 6. **Create a `.env` file in the root directory:**
+
    ```
    API_key=your_api_key_here
    API_Read_Access_Token=your_read_access_token_here
    ```
 
 7. **Run the application:**
+
    ```bash
    python app.py
    ```
@@ -120,6 +126,7 @@ The application fetches data from TMDB's trending endpoints:
 - **Series:** `/trending/tv/day` — Today's trending TV shows
 
 Each request includes:
+
 - Authorization Bearer token
 - Language preference (English)
 
@@ -131,16 +138,17 @@ Edit the CSS variables in `templates/home.html` or `templates/series.html`:
 
 ```css
 :root {
-  --bg-deep:      #080A0F;      /* Dark background */
-  --accent:       #7C5CFC;      /* Electric indigo */
-  --accent-warm:  #F5A623;      /* Gold accent */
-  --accent-teal:  #00C9A7;      /* Teal (series only) */
+  --bg-deep: #080a0f; /* Dark background */
+  --accent: #7c5cfc; /* Electric indigo */
+  --accent-warm: #f5a623; /* Gold accent */
+  --accent-teal: #00c9a7; /* Teal (series only) */
 }
 ```
 
 ### Fonts
 
 Currently uses Google Fonts:
+
 - **Syne** — Display/titles
 - **DM Sans** — Body text
 - **DM Mono** — Monospace/meta
@@ -164,15 +172,18 @@ Update the font links in the `<head>` to use different fonts.
 ## Troubleshooting
 
 ### "API key not found"
+
 - Ensure .env file exists in the root directory
 - Check that `API_Read_Access_Token` is correctly set
 - Restart the Flask server after updating .env
 
 ### "CORS or 403 errors"
+
 - Verify your TMDB API token is active
 - Check rate limits (TMDB allows ~40 requests/10 seconds)
 
 ### "Images not loading"
+
 - TMDB CDN may be down (rare) or images unavailable for a title
 - Fallback placeholder SVG is shown automatically
 

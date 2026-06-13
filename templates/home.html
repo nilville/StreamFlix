@@ -1,26 +1,25 @@
-{% extends "base.html" %} 
-{% from "macros.html" import render_card %}
-
-{% block title %}StreamFlix — Home{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% from "macros.html" import render_card %} {% block
+title %}StreamFlix — Home{% endblock %} {% block content %}
 <!-- Section heading -->
-<div class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between">
-    <div>
-        <p class="section-label mb-2">Curated for you</p>
-        <h2 class="section-title">
-            Trending <span style="color: var(--accent)">Now</span>
-        </h2>
-    </div>
-    <div>
-        <a href="/all_movies" class="btn">View All Movies</a>
-    </div>
+<div
+  class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between"
+>
+  <div>
+    <p class="section-label mb-2">Curated for you</p>
+    <h2 class="section-title">
+      Trending <span style="color: var(--accent)">Now</span>
+    </h2>
+  </div>
+  <div>
+    <a href="/all_movies" class="btn">View All Movies</a>
+  </div>
 </div>
 
 <!-- ═══ MOVIE GRID ═══════════════════════ -->
-<div class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-    {% for movie in movies %}
-        {{ render_card(movie, 'movie', loop.index0) }}
-    {% endfor %}
+<div
+  class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+>
+  {% for movie in movies %} {{ render_card(movie, 'movie', loop.index0) }} {%
+  endfor %}
 </div>
 {% endblock %}

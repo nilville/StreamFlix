@@ -1,46 +1,66 @@
-{% extends "base.html" %} 
-{% from "macros.html" import render_card %}
-
-{% block title %}StreamFlix — All Series{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% from "macros.html" import render_card %} {% block
+title %}StreamFlix — All Series{% endblock %} {% block content %}
 <div class="hero-glow series"></div>
 <div class="page-heading relative z-10 mb-6 sm:mb-10">
-    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8">
-        <div>
-            <p class="section-label series mb-2">Binge-worthy picks</p>
-            <h2 class="section-title">
-                All <span style="color: var(--accent-teal)">Series</span>
-            </h2>
-        </div>
-        <div><a href="/series" class="btn">Back to Trending Series</a></div>
+  <div
+    class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-8"
+  >
+    <div>
+      <p class="section-label series mb-2">Binge-worthy picks</p>
+      <h2 class="section-title">
+        All <span style="color: var(--accent-teal)">Series</span>
+      </h2>
     </div>
+    <div><a href="/series" class="btn">Back to Trending Series</a></div>
+  </div>
 </div>
 
-<div id="series-grid" class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-    {% for show in series %}
-        {{ render_card(show, 'tv', loop.index0) }}
-    {% endfor %}
+<div
+  id="series-grid"
+  class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+>
+  {% for show in series %} {{ render_card(show, 'tv', loop.index0) }} {% endfor
+  %}
 </div>
 
 {% if total_pages and total_pages > 1 %}
 <div class="pagination-container relative z-10">
-    {% if page > 1 %}
-    <a href="{{ url_for('all_series', page=page-1) }}" class="btn">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-        Prev
-    </a>
-    {% endif %}
-    
-    <span class="pagination-info">
-        Page {{ page }} of {{ total_pages }}
-    </span>
-    
-    {% if page < total_pages %}
-    <a href="{{ url_for('all_series', page=page+1) }}" class="btn">
-        Next
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-    </a>
-    {% endif %}
+  {% if page > 1 %}
+  <a href="{{ url_for('all_series', page=page-1) }}" class="btn">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 mr-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2.5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+    Prev
+  </a>
+  {% endif %}
+
+  <span class="pagination-info"> Page {{ page }} of {{ total_pages }} </span>
+
+  {% if page < total_pages %}
+  <a href="{{ url_for('all_series', page=page+1) }}" class="btn">
+    Next
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 ml-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2.5"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </a>
+  {% endif %}
 </div>
 {% endif %} {% endblock %}

@@ -1,43 +1,62 @@
-{% extends "base.html" %} 
-{% from "macros.html" import render_card %}
-
-{% block title %}StreamFlix — All Movies{% endblock %}
-
-{% block content %}
-<div class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between">
-    <div>
-        <p class="section-label mb-2">All movies</p>
-        <h2 class="section-title">
-            All <span style="color: var(--accent)">Movies</span>
-        </h2>
-    </div>
-    <div><a href="/" class="btn">Back to Trending</a></div>
+{% extends "base.html" %} {% from "macros.html" import render_card %} {% block
+title %}StreamFlix — All Movies{% endblock %} {% block content %}
+<div
+  class="page-heading relative z-10 mb-6 sm:mb-10 flex items-end justify-between"
+>
+  <div>
+    <p class="section-label mb-2">All movies</p>
+    <h2 class="section-title">
+      All <span style="color: var(--accent)">Movies</span>
+    </h2>
+  </div>
+  <div><a href="/" class="btn">Back to Trending</a></div>
 </div>
 
-<div class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
-    {% for movie in movies %}
-        {{ render_card(movie, 'movie', loop.index0) }}
-    {% endfor %}
+<div
+  class="relative z-10 grid gap-x-3 gap-y-6 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+>
+  {% for movie in movies %} {{ render_card(movie, 'movie', loop.index0) }} {%
+  endfor %}
 </div>
 
 {% if total_pages and total_pages > 1 %}
 <div class="pagination-container relative z-10">
-    {% if page > 1 %}
-    <a href="{{ url_for('all_movies', page=page-1) }}" class="btn">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
-        Prev
-    </a>
-    {% endif %}
-    
-    <span class="pagination-info">
-        Page {{ page }} of {{ total_pages }}
-    </span>
-    
-    {% if page < total_pages %}
-    <a href="{{ url_for('all_movies', page=page+1) }}" class="btn">
-        Next
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
-    </a>
-    {% endif %}
+  {% if page > 1 %}
+  <a href="{{ url_for('all_movies', page=page-1) }}" class="btn">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 mr-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2.5"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M15 19l-7-7 7-7"
+      />
+    </svg>
+    Prev
+  </a>
+  {% endif %}
+
+  <span class="pagination-info"> Page {{ page }} of {{ total_pages }} </span>
+
+  {% if page < total_pages %}
+  <a href="{{ url_for('all_movies', page=page+1) }}" class="btn">
+    Next
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-4 h-4 ml-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      stroke-width="2.5"
+    >
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+  </a>
+  {% endif %}
 </div>
 {% endif %} {% endblock %}
